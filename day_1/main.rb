@@ -1,34 +1,19 @@
 input = File.read('input.txt').split("\n").map(&:to_i)
 
-greater = 0
-
-input.each.with_index do |n, i|
-	next if i == 0
-
-	if n > input[i - 1]
-		greater += 1
-	end
-end
-
-p greater
-
 new_ary = []
-
-input.each.with_index do |n, i|
-	next if i < 2
-	number = n
-	number += input[i - 1]
-	number += input[i - 2]
-
-	new_ary << number
-end
-
 greater = 0
-new_ary.each.with_index do |n, i|
+greater_2 = 0
+
+arr.each.with_index do |n, i|
 	next if i == 0
-	if n > new_ary[i - 1]
-		greater += 1
+
+	greater += 1 if n > arr[i - 1]
+
+	if i >= 2
+		new_ary << input[i-2..i].sum
+
+		greater_2 += 1 if new_ary.length > 1 && new_ary[-1] > new_ary[-2]
 	end
 end
 
-p greater
+p greater, greater_2
