@@ -14,22 +14,20 @@ let secondCalcPos = {horizontal: 0, vertical: 0, aim: 0}
 rows.forEach(row => {
 	let [instruction, amount] = row;
 
-	if (instruction === 'down') {
+	if (['down', 'up'].includes(instruction)) {
+		// Comparing to a letter in between d and u so that we know which direction to move in
+		amount *= -instruction.localeCompare('e')
+
 		firstCalcPos.vertical += amount;
 		secondCalcPos.aim += amount;
-	} else if (instruction === 'up') {
-		firstCalcPos.vertical -= amount;
-		secondCalcPos.aim -= amount;
-	} else if (instruction === 'forward') {
+	} else if (['forward', 'back'].includes(instruction)) {
+		// Comparing to a letter in between f and b so that we know which direction to move in
+		amount *= instruction.localeCompare('d')
+
 		firstCalcPos.horizontal += amount;
-
 		secondCalcPos.horizontal += amount;
-		secondCalcPos.vertical += amount * secondCalcPos.aim;
-	} else if (instruction === 'back') {
-		firstCalcPos.horizontal -= amount;
 
-		secondCalcPos.horizontal -= amount;
-		secondCalcPos.vertical -= amount * secondCalcPos.aim;
+		secondCalcPos.vertical += (amount * secondCalcPos.aim);
 	}
 })
 
