@@ -20,10 +20,7 @@ rows.forEach(row => {
 
 		firstCalcPos.vertical += amount;
 		secondCalcPos.aim += amount;
-	} else if (['forward', 'back'].includes(instruction)) {
-		// Comparing to a letter in between f and b so that we know which direction to move in
-		amount *= instruction.localeCompare('d')
-
+	} else if ('forward' === instruction) {
 		firstCalcPos.horizontal += amount;
 		secondCalcPos.horizontal += amount;
 
