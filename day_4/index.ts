@@ -1,4 +1,4 @@
-const input = await Deno.readTextFile('./input.txt');
+onst input = await Deno.readTextFile('./input.txt');
 
 let [draws, ...allBoards] = input.split('\n\n')
 
