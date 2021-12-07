@@ -1,10 +1,5 @@
 fish_counter = File.read('input.txt').split(',').map(&:to_i).group_by(&:itself).map { |k, v| [k, v.count] }.to_h
 
-def set_fishes(fish_map, fish_index, amount)
-	fish_map[fish_index] ||= 0
-	fish_map[fish_index] += amount
-end
-
 def simulate_lantern_fish_day(fish_counter, days_to_simulate)
 	new_fish_counter = {}
 
@@ -12,10 +7,10 @@ def simulate_lantern_fish_day(fish_counter, days_to_simulate)
 		count = fish_counter[fish]
 
 		if fish > 0
-			set_fishes(new_fish_counter, fish - 1, count)
+			new_fish_counter[fish - 1] = new_fish_counter[fish - 1].to_i + count
 		elsif fish == 0
-			set_fishes(new_fish_counter, 6, count)
-			set_fishes(new_fish_counter, 8, count)
+			new_fish_counter[6] = new_fish_counter[6].to_i + count
+			new_fish_counter[8] = new_fish_counter[8].to_i + count
 		end
 	end
 
