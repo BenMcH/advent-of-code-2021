@@ -26,19 +26,19 @@ def count_letters(counts)
 
 	counts.keys.each do |key|
 		new_counts[key[0]] = new_counts[key[0]].to_i + counts[key]
-	end	
+	end
 
 	new_counts
 end
 
-def part_1(start, polymers)
+def run_for_days(start, polymers, days)
 	str = start.split('')
 
 	polymers = build_polymers(polymers)
 
 	counts = str.each_cons(2).map(&:join).tally
 
-	result = simulate_day(counts, polymers, 10)
+	result = simulate_day(counts, polymers, days)
 
 	result = count_letters(result)
 	result[str[-1]] += 1
@@ -49,32 +49,15 @@ def part_1(start, polymers)
 end
 
 ex_start, ex_polymers = File.read('example.txt').split("\n\n")
-ans = part_1(ex_start, ex_polymers)
+ans = run_for_days(ex_start, ex_polymers, 10)
 
 throw Exception.new("Part 1 is not 1588, got: #{ans}" ) if 1588 != ans
 
 start, polymers = File.read('input.txt').split("\n\n")
 
-p part_1(start, polymers)
+p run_for_days(start, polymers, 10)
 
-def part_2(start, polymers)
-	str = start.split('')
-
-	polymers = build_polymers(polymers)
-
-	counts = str.each_cons(2).map(&:join).tally
-
-	result = simulate_day(counts, polymers, 40)
-
-	result = count_letters(result)
-	result[str[-1]] += 1
-
-	min, max = result.to_a.map(&:last).minmax
-
-	max - min
-end
-
-ans = part_2(ex_start, ex_polymers)
+ans = run_for_days(ex_start, ex_polymers, 40)
 throw Exception.new("Part 2 is not 2188189693529, got: #{ans}") if ans != 2188189693529
 
-p part_2(start, polymers)
+p run_for_days(start, polymers, 40)
