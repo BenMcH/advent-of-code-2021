@@ -14,7 +14,6 @@ def create_board(input)
 		arr[y] = x_row.dup
 	end
 
-	# p max_x, max_y
 	rows.each do |y, x|
 		arr[y][x] = '#'
 	end
