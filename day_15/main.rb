@@ -1,40 +1,26 @@
 def get_neighbors(input, y, x)
 	neighbors = []
 
-	if y > 0
-		neighbors << [y - 1, x]
-	end
-
-	if y < input.length - 1
-		neighbors << [y + 1, x]
-	end
-
-	if x > 0
-		neighbors << [y, x - 1]
-	end
-
-	if x < input[y].length - 1
-		neighbors << [y, x + 1]
-	end
+	neighbors << [y - 1, x] if y > 0
+	neighbors << [y + 1, x] if y < input.length - 1
+	neighbors << [y, x - 1] if x > 0
+	neighbors << [y, x + 1] if x < input[y].length - 1
 
 	neighbors
 end
 
-def part_1(input, y = 0, x = 0, distances = nil)
-	distances ||= input.map.with_index do |row|
+def part_1(input)
+	distances = input.map.with_index do |row|
 		row.map {|cell| Float::INFINITY}
 	end
 	distances[0][0] = 0
+	queue = [[0, 0]]
 
-	queue = [[y, x]]
+	until queue.empty?
+		y, x = queue.shift
+		current_score = distances[y][x]
 
-	while queue.length > 0
-		current = queue.shift
-		neighbors = get_neighbors(input, current[0], current[1])
-
-		current_score = distances[current[0]][current[1]]
-
-		neighbors.each do |neighbor|
+		get_neighbors(input, y, x).each do |neighbor|
 			ny, nx = neighbor
 			cost = input[ny][nx]
 
@@ -87,17 +73,15 @@ def make_larger_board(input)
 	end
 	original_board = board.dup
 
-	board.concat(increment_board(original_board))
-	board.concat(increment_board(original_board, 2))
-	board.concat(increment_board(original_board, 3))
-	board.concat(increment_board(original_board, 4))
+	4.times do |x|
+		board.concat(increment_board(original_board, x + 1))
+	end
+
 	board
 end
 
 def part_2(input)
-	board = make_larger_board(input)
-	
-	part_1(board)
+	part_1(make_larger_board(input))
 end
 
 ex_output = part_2(example_input)
