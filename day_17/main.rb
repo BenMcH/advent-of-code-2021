@@ -1,13 +1,8 @@
-Velocity = Struct.new(:x, :y)
+Vector = Struct.new(:x, :y)
 
 def get_max_y(velocity, target_x, target_y)
-	pos = Velocity.new(0, 0)
+	pos = Vector.new(0, 0)
 	max_y = pos.y
-
-	mid_x = target_x.min + (target_x.max - target_x.min) / 2
-	mid_y = target_y.min + (target_y.max - target_y.min) / 2
-
-	mid_point = Velocity.new(mid_x, mid_y)
 
 	while pos.y > target_y.min
 		pos.x += velocity.x
@@ -40,9 +35,13 @@ def part_1(input)
 	y_range = parse_range(y)
 
 	(-1000..1000).flat_map do |x|
-		(-1000..1000).map do |y|
-			velocity = Velocity.new(x, y)
-			get_max_y(Velocity.new(x, y), x_range, y_range)
+		if x < 0 && x_range.min > x || x > 0 && x_range.max < x
+			[]
+		else
+			(-200..200).map do |y|
+				velocity = Vector.new(x, y)
+				get_max_y(Vector.new(x, y), x_range, y_range)
+			end
 		end
 	end
 end
@@ -57,7 +56,6 @@ example_input = File.read('example.txt').strip
 
 ex = part_1(example_input)
 throw Exception.new("Part 1 is not 45, got: #{ex.max}" ) if 45 != ex.max
-p 'passed part 1'
 
 input = File.read('input.txt').strip
 
