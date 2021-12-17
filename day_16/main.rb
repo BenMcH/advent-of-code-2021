@@ -5,8 +5,7 @@ def decode_packet(packet)
 
 	header = {
 		version: version,
-		type_id: type_id,
-		children: nil
+		type_id: type_id
 	}
 
 	if type_id == 4
@@ -15,7 +14,6 @@ def decode_packet(packet)
 		loop do
 			continue_bit = rest[0]
 			value << rest[1...5]
-
 			rest = rest[5..-1]
 
 			break unless continue_bit == '1'
@@ -34,15 +32,13 @@ def decode_packet(packet)
 			sub_packets = rest[0...bits]
 			rest = rest[bits..-1]
 
-			while sub_packets.length > 0 && sub_packets.include?('1')
+			while sub_packets.length > 0
 				pack, sub_packets = decode_packet(sub_packets)
 				header[:children] << pack
 			end
 		else
-			bits = rest[0...11].to_i(2)
+			number_of_sub_packets = rest[0...11].to_i(2)
 			rest = rest[11..-1]
-
-			number_of_sub_packets = bits
 
 			while number_of_sub_packets > 0
 				sub_packets, rest = decode_packet(rest)
@@ -68,16 +64,11 @@ def add_versions(result)
 end
 
 def part_1(input)
-	result = decode_packet(input)
-
-	add_versions(result[0])
+	add_versions(decode_packet(input)[0])
 end
 
 def read_input(data)
-	input = data.strip.split('').map {|char| char.to_i(16).to_s(2).rjust(4, '0')}.join
-	# input = input[0...-1] while input[-1] == '0'
-
-	input
+	data.strip.split('').map {|char| char.to_i(16).to_s(2).rjust(4, '0')}.join
 end
 
 example_packets = read_input('A0016C880162017C3686B18A3D4780')
