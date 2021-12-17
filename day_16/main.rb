@@ -90,12 +90,33 @@ input_packets = read_input(File.read('input.txt'))
 
 p part_1(input_packets)
 
+def get_value(cell)
+	if cell[:type_id] == 4
+		return cell[:children]
+	end
+
+	case cell[:type_id]
+	when 0 then cell[:children].map {|child| get_value(child)}.sum
+	when 1 then cell[:children].map {|child| get_value(child)}.reduce(:*)
+	when 2 then cell[:children].map {|child| get_value(child)}.min
+	when 3 then cell[:children].map {|child| get_value(child)}.max
+	when 5 then get_value(cell[:children].first) > get_value(cell[:children][1]) ? 1 : 0
+	when 6 then get_value(cell[:children].first) < get_value(cell[:children][1]) ? 1 : 0
+	when 7 then get_value(cell[:children].first) == get_value(cell[:children][1]) ? 1 : 0
+	end
+end
+
 def part_2(input)
+	tree = decode_packet(input)[0]
+	require 'json'
+	File.write('output.json', tree.to_json)
+
+	get_value(tree)
 end
 
 example_packets = read_input('9C0141080250320F1802104A08')
 
-ex_output = part_1(example_packets)
+ex_output = part_2(example_packets)
 throw Exception.new("Part 2 is not 1, got: #{ex_output}") if ex_output != 1
 
 p part_2(input_packets)
