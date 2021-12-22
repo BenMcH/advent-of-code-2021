@@ -46,6 +46,7 @@ end
 example_input = File.read('example.txt').strip.split("\n")
 
 hash = {}
+# TODO: Implement overlapping cube detection and counting of on and off cells with map
 example_input.each do |line|
 	input = parse_input_line(line)
 	(input.x_start..input.x_end).each do |x|
