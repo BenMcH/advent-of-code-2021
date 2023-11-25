@@ -1,3 +1,3 @@
-# Advent of Code 2021
+# Project has moved
 
-All solutions are expecting input as `input.txt` next to the source code. Day 1 started with Ruby, but each day may be a different language. Time will tell what I choose to use :smile: 
+This project has been bundled into a central [Advent of Code](https://github.com/benMcH/advent-of-code) repo. 
